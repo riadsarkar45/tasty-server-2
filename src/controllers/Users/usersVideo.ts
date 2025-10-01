@@ -1,9 +1,9 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { UserId } from "../../types/interface";
 import prisma from "../../Prisma/prisma";
+import { UserPayload } from "../../types/interface";
 
-export const userVideo = async (req: FastifyRequest<{ Params: UserId }>, reply: FastifyReply) => {
-    const { userId, role } = req.params;
+export const userVideo = async (req: FastifyRequest, reply: FastifyReply) => {
+    const { userId, userRole } = req.user as UserPayload;
 
     if (!userId) return reply.status(401).send({ message: 'Unauthorized access' })
 
@@ -11,14 +11,15 @@ export const userVideo = async (req: FastifyRequest<{ Params: UserId }>, reply: 
         const isUserIdExist = await prisma.users.findUnique({ where: { id: userId } })
 
         if (!isUserIdExist) return reply.status(401).send({ message: 'Unauthorized access' })
-        // const where = role === 'admin'
-        //     ? {}
-        //     : { createdBy: userId };
-        // const getUserVideo = await prisma.videos.findMany(
-        //     {
-        //         where,
-        //     }
-        // )
+
+        const getUserVideo = await prisma.videos.findMany({
+            where: userRole === "admin"
+                ? {}
+                : { userId: userId },
+        });
+
+        reply.status(200).send(getUserVideo)
+
     } catch (e) {
         console.log(e);
         return reply.status(500).send({ error: "Internal Server Error" });

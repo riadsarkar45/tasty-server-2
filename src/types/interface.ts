@@ -61,4 +61,5 @@ export interface UserPayload {
   userId: number;
   email: string;
   userRole: string
+  userEmail: string
 }

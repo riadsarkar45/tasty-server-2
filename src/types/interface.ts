@@ -57,8 +57,14 @@ export type UserId = {
   role: string
 }
 
+export type videoInteract = {
+  videoId: string;
+  type: string;
+}
+
 export interface UserPayload {
   userId: number;
   email: string;
   userRole: string
+  userEmail: string
 }

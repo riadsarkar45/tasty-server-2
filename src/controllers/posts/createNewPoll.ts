@@ -179,12 +179,14 @@ export async function getCreatedVideos(req: FastifyRequest<{ Params: VideoParams
                 polls: {
                     include: {
                         options: {
-                            include:{
+                            include: {
                                 responses: true
                             }
                         },
                     },
                 },
+                comments: true,
+                likes: true,
                 questions: true,
             },
             orderBy: { createdAt: "desc" },
@@ -202,6 +204,8 @@ export async function getCreatedVideos(req: FastifyRequest<{ Params: VideoParams
             videoUrl: video.videoUrl,
             createdBy: video.createdBy,
             createdAt: video.createdAt,
+            likes: video.likes,
+            comments: video.comments,
             items: [...video.polls, ...video.questions].sort(
                 (a, b) => parseFloat(a.startTime) - parseFloat(b.startTime)
             ),
@@ -226,19 +230,19 @@ export const submitPollResponse = async (req: FastifyRequest<{ Body: PollSubmiss
     //     },
     // });
 
-        const submit = await prisma.pollResponses.create(
-            {
-                data: {
-                    submittedBy: ' static userId',
-                    selectedOption: selectedOption,
-                    pollOptionId: pollOptionId,
-                    submittedAt: new Date().toISOString(),
-                }
+    const submit = await prisma.pollResponses.create(
+        {
+            data: {
+                submittedBy: ' static userId',
+                selectedOption: selectedOption,
+                pollOptionId: pollOptionId,
+                submittedAt: new Date().toISOString(),
             }
-        )
-
-        if (submit) {
-            reply.send({ message: 'Response stored' })
         }
-    
+    )
+
+    if (submit) {
+        reply.send({ message: 'Response stored' })
+    }
+
 }

@@ -1,6 +1,7 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+
 import { UserPayload, videoInteract } from "../../types/interface";
 import prisma from "../../Prisma/prisma";
+import { FastifyReply, FastifyRequest } from "fastify";
 
 export const interactVideo = async (req: FastifyRequest<{ Body: videoInteract }>, reply: FastifyReply) => {
 

@@ -5,7 +5,6 @@ import prisma from '../../Prisma/prisma';
 export const authenticate = async (request: FastifyRequest, reply: FastifyReply) => {
   try {
     const token = request.cookies?.token;
-
     if (!token) {
       return reply.status(401).send({ message: 'No token in cookies' });
     }

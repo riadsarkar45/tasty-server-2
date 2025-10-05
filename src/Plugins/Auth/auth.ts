@@ -5,7 +5,7 @@ import prisma from '../../Prisma/prisma';
 export const authenticate = async (request: FastifyRequest, reply: FastifyReply) => {
   try {
     const token = request.cookies?.token;
-    
+
     if (!token) {
       return reply.status(401).send({ message: 'No token in cookies' });
     }
@@ -18,7 +18,7 @@ export const authenticate = async (request: FastifyRequest, reply: FastifyReply)
 
     const checkIfUserExist = await prisma.users.findUnique({ where: { email: userEmail, id: userId } })
 
-    if (!checkIfUserExist) return reply.status(401).send({ message: 'Access Denied' })
+    if (!checkIfUserExist && checkIfUserExist === "inActive") return reply.status(401).send({ message: 'Something went wrong. Please contact to the admin.' })
 
   } catch (err) {
     console.log('JWT verify failed:', err);

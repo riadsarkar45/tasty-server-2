@@ -20,7 +20,6 @@ export const socketConnection = (io: Server) => {
 
       if (prev && prev !== videoId) {
 
-        // leave previous video BEFORE joining new one
         const prevSet = videoViewers.get(prev);
 
         if (prevSet) {
@@ -88,7 +87,7 @@ export const socketConnection = (io: Server) => {
       connectedClientIds.delete(clientId);
 
       io.emit("userCount", connectedClientIds.size);
-      
+
       console.log("DISCONNECT", socket.id, "clientId:", clientId, "reason:", reason);
     });
   });

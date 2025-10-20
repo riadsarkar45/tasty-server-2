@@ -33,10 +33,10 @@ export const Login = async (req: FastifyRequest<{ Body: LoginBody }>, reply: Fas
             reply
                 .setCookie('token', token, {
                     httpOnly: true,
-                    secure: true, // set to true in production
-                    sameSite: 'lax',
+                    secure: false, // set to true in production
+                    sameSite: 'none',
                     path: '/',
-                    maxAge: 60 * 60 * 24 // 1 day in seconds
+                    maxAge: 60 * 60 * 24 // 1 day in seconds    
                 })
                 .send({ message: "Login Successful", type: "success" })
         } else {

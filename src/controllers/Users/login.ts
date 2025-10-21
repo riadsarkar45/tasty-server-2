@@ -33,8 +33,8 @@ export const Login = async (req: FastifyRequest<{ Body: LoginBody }>, reply: Fas
             reply
                 .setCookie('token', token, {
                     httpOnly: true,
-                    secure: true, // set to true in production
-                    sameSite: 'none',
+                    secure: false, // set to true in production
+                    sameSite: 'lax',
                     path: '/',
                     maxAge: 60 * 60 * 24 // 1 day in seconds    
                 })

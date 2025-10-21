@@ -64,6 +64,18 @@ export const socketConnection = (io: Server) => {
       console.log(`LEAVE video=${videoId} clientId=${clientId}`);
     });
 
+    socket.on("newComment", (data) => {
+      const { comment, videoId } = data;
+
+      if (!comment || !videoId) return;
+
+      if (videoViewers.has(videoId)) {
+
+        io.to(videoId).emit("newComment", { comment, userName: "Anonymous" });
+
+      }
+    })
+
     // disconnect (refresh/close)
     socket.on("disconnect", (reason) => {
 
